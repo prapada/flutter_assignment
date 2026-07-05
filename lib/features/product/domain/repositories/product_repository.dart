@@ -5,4 +5,6 @@ abstract class ProductRepository {
   Future<List<Product>> getProducts({int skip = 0, int limit = 20});
 
   Future<ProductDetail> getProductById(int id);
+
+  Future<List<Product>> searchProducts(String query);
 }

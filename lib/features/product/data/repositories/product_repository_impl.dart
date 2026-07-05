@@ -18,4 +18,9 @@ class ProductRepositoryImpl implements ProductRepository {
   Future<ProductDetail> getProductById(int id) async {
     return remoteDataSource.getProductById(id);
   }
+
+  @override
+  Future<List<Product>> searchProducts(String query) {
+    return remoteDataSource.searchProducts(query);
+  }
 }
