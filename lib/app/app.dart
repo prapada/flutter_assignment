@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_assignment/core/network/dio_client.dart';
+import 'package:flutter_assignment/features/product/bloc/product_list_bloc.dart';
+import 'package:flutter_assignment/features/product/data/datasources/product_remote_data_source.dart';
+import 'package:flutter_assignment/features/product/data/repositories/product_repository_impl.dart';
+import 'package:flutter_assignment/features/product/domain/usecases/get_products.dart';
+import 'package:flutter_assignment/features/product/presentation/pages/product_list_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -6,56 +13,25 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Product Catalog',
       theme: ThemeData(
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: .center,
-          children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      home: BlocProvider(
+        create: (context) => _createProductListBloc(),
+        child: const ProductListScreen(),
       ),
     );
+  }
+
+  ProductListBloc _createProductListBloc() {
+    // Dependency Injection
+    final dioClient = DioClient.create();
+    final productRemoteDataSource = ProductRemoteDataSourceImpl(dioClient);
+    final productRepository = ProductRepositoryImpl(productRemoteDataSource);
+    final getProducts = GetProducts(productRepository);
+    
+    return ProductListBloc(getProducts);
   }
 }
