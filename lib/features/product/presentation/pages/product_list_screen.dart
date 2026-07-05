@@ -77,10 +77,15 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   ),
                 ),
                 Expanded(
-                  child: ProductGrid(
-                    products: products,
-                    controller: _scrollController,
-                    isLoadingMore: !hasReachedMax,
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<ProductListBloc>().add(LoadProducts());
+                    },
+                    child: ProductGrid(
+                      products: products,
+                      controller: _scrollController,
+                      isLoadingMore: !hasReachedMax,
+                    ),
                   ),
                 ),
               ],
