@@ -1,17 +1,46 @@
-# flutter_assignment
+# Flutter Assignment
 
-A new Flutter project.
+A Flutter app for browsing products in a Product Catalog style. It fetches data from the DummyJSON API and displays it across product list, search, and product detail screens.
 
-## Getting Started
+## Main Features
 
-This project is a starting point for a Flutter application.
+- Display a product list on the home screen
+- Load more products using infinite scroll
+- Refresh data with pull-to-refresh
+- Search products in real time
+- View detailed product information with images and extra details
+- Use state management with Flutter Bloc
 
-A few resources to get you started if this is your first Flutter project:
+## Technologies Used
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Flutter
+- Dart
+- flutter_bloc
+- dio
+- cached_network_image
+- equatable
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Project Structure
+
+- lib/app: Main app setup
+- lib/core: Shared project components such as dependency injection and networking
+- lib/features/product: Product feature separated into bloc, data, domain, and presentation layers
+
+## How to Run
+
+1. Install the Flutter SDK and verify it is working:
+   ```bash
+   flutter --version
+   ```
+2. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+3. Run the app:
+   ```bash
+   flutter run
+   ```
+
+## Note
+
+This app uses the DummyJSON API to simulate a real-world application that loads data from the network and renders dynamic content.
