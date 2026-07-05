@@ -1,11 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_assignment/core/di/injection_container.dart';
+import 'package:flutter_assignment/features/product/bloc/product_detail_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_assignment/features/product/domain/entities/product.dart';
+import 'package:flutter_assignment/features/product/presentation/pages/product_detail_screen.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
 
   const ProductCard({super.key, required this.product});
+
+  void _openDetail(BuildContext context) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (_) => BlocProvider(
+        create: (_) => ProductDetailBloc(getProductDetail),
+        child: ProductDetailScreen(productId: product.id),
+      ),
+    ),
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +30,12 @@ class ProductCard extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => _openDetail(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           Expanded(
             child: ClipRRect(
               borderRadius: const BorderRadius.vertical(
@@ -98,6 +117,7 @@ class ProductCard extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

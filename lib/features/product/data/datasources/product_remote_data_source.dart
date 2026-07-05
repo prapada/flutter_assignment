@@ -1,10 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_assignment/core/network/api_endpoints.dart';
 import 'package:flutter_assignment/core/network/dio_client.dart';
+import 'package:flutter_assignment/features/product/data/models/product_detail_model.dart';
 import 'package:flutter_assignment/features/product/data/models/product_model.dart';
 
 abstract class ProductRemoteDataSource {
   Future<List<ProductModel>> getProducts({int skip = 0, int limit = 20});
+
+  Future<ProductDetailModel> getProductById(int id);
 }
 
 class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
@@ -27,6 +30,23 @@ class ProductRemoteDataSourceImpl implements ProductRemoteDataSource {
       return productsJson
           .map((json) => ProductModel.fromJson(json as Map<String, dynamic>))
           .toList();
+    } else {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
+    }
+  }
+
+  @override
+  Future<ProductDetailModel> getProductById(int id) async {
+    final response = await dioClient.dio.get(ApiEndpoints.productById(id));
+
+    if (response.statusCode == 200) {
+      return ProductDetailModel.fromJson(
+        response.data as Map<String, dynamic>,
+      );
     } else {
       throw DioException(
         requestOptions: response.requestOptions,
