@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_assignment/core/di/injection_container.dart';
+import 'package:flutter_assignment/features/product/bloc/search_product_bloc.dart';
 import 'package:flutter_assignment/features/product/presentation/pages/search_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_assignment/features/product/bloc/product_list_bloc.dart';
@@ -57,7 +59,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const SearchScreen()),
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider(
+                            create: (_) => SearchProductBloc(searchProducts),
+                            child: const SearchScreen(),
+                          ),
+                        ),
                       );
                     },
                     child: IgnorePointer(
